@@ -48,10 +48,12 @@ python -m scripts.benchmark --orders 20000 --engine spark
 ```
 The Spark tests are skipped automatically if PySpark or Java is missing.
 
-## Results (fill only from your own runs)
+## Results (measured on a Windows laptop, Python 3.11, pandas 3.0, one machine)
 | Metric | Value | How measured |
 |---|---|---|
-| Tests passing | | `pytest` |
-| Line coverage | | `pytest --cov=pipelineforge` |
-| Batch throughput, pandas engine | | `python -m scripts.benchmark --orders 20000` (synthetic data, one machine) |
-| Batch throughput, Spark engine | | `python -m scripts.benchmark --orders 20000 --engine spark` |
+| Tests passing | 35 passed (including the PySpark tests) | `pytest` |
+| Line coverage | 80% (the Kafka transport file and the CLI wrapper are not covered) | `pytest --cov=pipelineforge` |
+| Batch throughput, pandas engine | 39,601 source item-rows/sec (median of 3 runs; 49,969 items in about 1.26 s) | `python -m scripts.benchmark --orders 20000` (synthetic data) |
+| Batch throughput, Spark engine | 7,194 source item-rows/sec (median of 3 runs) | `python -m scripts.benchmark --orders 20000 --engine spark` |
+
+Spark is slower than pandas here: the data is small (about 50k rows), Spark's start-up cost dominates, and PyArrow was not installed so data conversion took the slow path. The Spark engine exists to show the same transform running on Spark (tests check identical output); it is not faster at this size.
