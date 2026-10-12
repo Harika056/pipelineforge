@@ -1,0 +1,3 @@
+# Optional: PySpark engine for the fact transform (needs Java 17 or newer on the machine).
+-r requirements.txt
+pyspark>=3.5,<5

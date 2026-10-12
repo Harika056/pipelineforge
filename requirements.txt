@@ -1,0 +1,2 @@
+# Core pipeline (batch + CDC apply + CLI). Uses the standard-library sqlite3 for source and warehouse.
+pandas>=2.1,<4
